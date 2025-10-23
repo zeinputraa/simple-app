@@ -15,9 +15,27 @@ pipeline {
                 sh 'echo "Building application..."'
             }
         }
+        stage('Check Docker') {
+            steps {
+                script {
+                    // Test Docker availability
+                    sh '''
+                        echo "Checking Docker installation..."
+                        docker --version || echo "Docker not installed"
+                        docker ps || echo "Cannot connect to Docker daemon"
+                    '''
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh """
+                        echo "Current directory:"
+                        pwd
+                        ls -la
+                        echo "Building Docker image..."
+                    """
                     sh "docker build -t ${env.IMAGE_NAME}:${env.BUILD_NUMBER} ."
                 }
             }
@@ -37,6 +55,11 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }
