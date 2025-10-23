@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Build Docker Image') {
       steps {
-        sh """docker build -t ${env.IMAGE_NAME}:${env.BUILD_NUMBER} ."""
+        sh 'docker build -t zeinputra/simple-app:2 .'
       }
     }
     stage('Push Docker Image') {
