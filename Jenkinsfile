@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'zeinputraa/simple-app'
+        IMAGE_NAME = 'zeinputra/simple-app'
         REGISTRY = 'https://index.docker.io/v1/'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials'
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
