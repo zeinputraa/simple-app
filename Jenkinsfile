@@ -1,32 +1,39 @@
 pipeline {
     agent any
+
     environment {
-        IMAGE_NAME = 'zeinputra/simple-app'
+        IMAGE_NAME = 'zeinputraa/simple-app'
         REGISTRY = 'https://index.docker.io/v1/'
-        REGISTRY_CREDENTIALS = 'dockerhub-credentials-zein'
+        REGISTRY_CREDENTIALS = 'dockerhub-credentials'
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        DOCKER_HOST = "unix:///var/run/docker.sock"
     }
+
     stages {
         stage('Checkout') {
             steps {
-                echo 'Melakukan checkout dari SCM...'
+                echo '📦 Melakukan checkout dari SCM...'
                 checkout scm
             }
         }
+
         stage('Build') {
             steps {
-                echo 'Mulai build aplikasi...'
+                echo '🏗️ Mulai build aplikasi...'
                 sh 'echo "Build selesai ✅"'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'Membangun Docker image...'
+                    echo '🐳 Membangun Docker image...'
                     docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
                     echo "✅ Image berhasil dibuat: ${IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
+
         stage('Push Docker Image') {
             steps {
                 script {
@@ -39,12 +46,16 @@ pipeline {
             }
         }
     }
+
     post {
         always {
-            echo '🏁 Pipeline selesai dijalankan'
+            echo '🏁 Selesai build OYYY!'
+        }
+        success {
+            echo '🎉 Pipeline sukses dijalankan!'
         }
         failure {
-            echo '❌ Terjadi kegagalan selama pipeline'
+            echo '❌ Terjadi kegagalan selama pipeline.'
         }
     }
 }
